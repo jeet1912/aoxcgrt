@@ -10,14 +10,16 @@ Tips:
     Create a new environment for this project.
     Run conda env list in your terminal to list the environments on your system.
     Activate the project-specific environment using conda activate project_name.
-    Run conda list --export > requirements/conda-requirements.txt  to update the conda-requirements from directory of this project, which will be oxcgrt.
-    Convert the notebook to the python script using jupyter nbconvert --to script OxCGRT.ipynb from code directory.
+    Run conda list --export > requirements/conda-requirements.txt  to update the conda-requirements from directory of this project, which 
+    will be oxcgrt. 
+    Convert the notebook to the python script using jupyter nbconvert --to script OxCGRT.ipynb from code directory. This can help us to 
+    view changes as well.
     Run pipreqs . --savepath requirements/pip-requirements.txt from oxcgrt directory.
+    To install the requirements file, using terminal navigate to the folder containing the requirements.txt file and run the command     
+    pip/pip3 install -r pip-requirements.txt
+    Using conda,run conda install --file conda-requirements.txt/pip-requirements.txt to install all the necessary dependencies for the 
+    project.
 
-    To install the requirements file, using terminal navigate to the folder containing the requirements.txt file and run the command pip/pip3 install -r pip-requirements.txt
-Using conda,run conda install --file conda-requirements.txt/pip-requirements.txt to install all the necessary dependencies for the project.
 
-
-// update Tips while factoring in how to use requirements folder to use the right packages in conda and for pip.
-
-// create a readme.md file to make it appear on the main repo page
+TODO:
+create a readme.md file to make it appear on the main repo page
