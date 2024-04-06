@@ -23,3 +23,7 @@ Tips:
 
 TODO:
 create a readme.md file to make it appear on the main repo page
+
+To suppress all warnings (not recommended)
+    import warnings
+    warnings.filterwarnings("ignore")
