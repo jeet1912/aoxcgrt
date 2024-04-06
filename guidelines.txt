@@ -1,0 +1,3 @@
+Refer: https://nbdime.readthedocs.io/en/stable/
+Run nbdime mergetool in terminal for merge conflicts. 
+
