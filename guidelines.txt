@@ -14,7 +14,9 @@ Tips:
     Convert the notebook to the python script using jupyter nbconvert --to script OxCGRT.ipynb from code directory.
     Run pipreqs . --savepath requirements/pip-requirements.txt from oxcgrt directory.
 
+    To install the requirements file, using terminal navigate to the folder containing the requirements.txt file and run the command pip/pip3 install -r pip-requirements.txt , from conda run, conda install --file conda-requirements.txt/pip-requirements.txt to install all the necessary dependencies for the project.
 
 
 // update Tips while factoring in how to use requirements folder to use the right packages in conda and for pip.
 
+// create a readme.md file to make it appear on the main repo page
