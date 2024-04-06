@@ -1,3 +1,15 @@
+If you wish to handle merge conflicts in your notebook itself:
 Refer: https://nbdime.readthedocs.io/en/stable/
 Run nbdime mergetool in terminal for merge conflicts. 
+
+Before a commit:
+    1. Convert the OxCGRT.ipynb to a python script and create/Update the pip-requirements.
+    3. Create/Update the conda-requirements using your conda environment.
+
+Tips:
+    Create a new environment for this project.
+    Run conda env list in your terminal to list the environments on your system.
+    Activate the project-specific environment using conda activate project_name.
+
+// update Tips while factoring in how to use requirements folder to use the right packages in conda and for pip.
 
