@@ -3,8 +3,8 @@ Refer: https://nbdime.readthedocs.io/en/stable/
 Run nbdime mergetool in terminal for merge conflicts. 
 
 Before a commit:
-    1. Convert the OxCGRT.ipynb to a python script and create/Update the pip-requirements.
-    3. Create/Update the conda-requirements using your conda environment.
+     Convert the OxCGRT.ipynb to a python script and create/Update the pip-requirements.
+     Create/Update the conda-requirements using your conda environment.
 
 Tips:
     Create a new environment for this project.
@@ -20,9 +20,11 @@ Tips:
     Using conda,run conda install --file conda-requirements.txt/pip-requirements.txt to install all the necessary dependencies for the 
     project.
 
+    
 
 TODO:
-create a readme.md file to make it appear on the main repo page
+create a readme.md file to make it appear on the main repo page.
+CHECKPOINT VARIABLES TO STORE RESULTS!
 
 To suppress all warnings (not recommended)
     import warnings
