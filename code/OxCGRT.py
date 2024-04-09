@@ -3,7 +3,7 @@
 
 # #### Import 
 
-# In[ ]:
+# In[2]:
 
 
 import matplotlib.pyplot as plt
@@ -19,7 +19,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-# In[ ]:
+# In[3]:
 
 
 import plotly.graph_objects as go
@@ -28,8 +28,7 @@ from statsmodels.nonparametric.kde import KDEUnivariate
 import plotly.figure_factory as ff
 
 
-
-# In[ ]:
+# In[4]:
 
 
 #from google.colab import drive
@@ -38,7 +37,7 @@ import plotly.figure_factory as ff
 
 # ## Import data
 
-# In[ ]:
+# In[5]:
 
 
 url = 'https://raw.githubusercontent.com/OxCGRT/covid-policy-dataset/main/data/OxCGRT_compact_national_v1.csv'
@@ -48,7 +47,7 @@ df = pd.read_csv(url)
 
 # ## Data Description and Wrangling
 
-# In[ ]:
+# In[6]:
 
 
 print('The shape of our dataset is {}.'.format(df.shape))
@@ -58,7 +57,7 @@ df.head()
 
 # ##### View the output of df.head() in a tabular format.
 
-# In[ ]:
+# In[7]:
 
 
 df.info()
@@ -71,7 +70,7 @@ df.info()
 # 
 # 
 
-# In[ ]:
+# In[8]:
 
 
 df = df.drop(columns=['RegionName','RegionCode','CountryName'])
@@ -80,13 +79,13 @@ print(df.shape)
 
 # #### Converting 'Date' to datetime.
 
-# In[ ]:
+# In[9]:
 
 
 df['Date'] = pd.to_datetime(df['Date'], format='%Y%m%d')
 
 
-# In[ ]:
+# In[10]:
 
 
 start_date = df['Date'].min()
@@ -94,7 +93,7 @@ end_date = df['Date'].max()
 print("Start Date: {}, End Date: {}".format(start_date,end_date))
 
 
-# In[ ]:
+# In[11]:
 
 
 # Select columns by data type, excluding datetime columns
@@ -112,7 +111,7 @@ values_of_each_column
 # 
 # 
 
-# In[ ]:
+# In[12]:
 
 
 df = df.drop(columns=['Jurisdiction'])
@@ -123,7 +122,7 @@ print(df.shape)
 # 
 # Useful for plotting V2B, V2C and Majority Vaccinated.
 
-# In[ ]:
+# In[13]:
 
 
 for col in df.columns:
@@ -131,7 +130,7 @@ for col in df.columns:
         df[col] = df[col].astype('category')
 
 
-# In[ ]:
+# In[14]:
 
 
 df.dtypes
@@ -140,7 +139,7 @@ df.dtypes
 # 
 # ### Renaming columns
 
-# In[ ]:
+# In[15]:
 
 
 df.columns = [col.split('_')[0] if ' ' in col else col for col in df.columns]
@@ -149,13 +148,13 @@ df.head(1)
 
 # ### Dealing With Missing Values
 
-# In[ ]:
+# In[16]:
 
 
 na_values = df.isna().sum()
 
 
-# In[ ]:
+# In[17]:
 
 
 fig = go.Figure(layout=go.Layout(
@@ -187,7 +186,7 @@ fig.show()
 
 # #### Drop entries where 'ConfirmedCases' and 'ConfirmedDeaths' are NaNs
 
-# In[ ]:
+# In[18]:
 
 
 df_ccd = df
@@ -196,7 +195,7 @@ df = df.dropna(subset=['ConfirmedCases', 'ConfirmedDeaths'])
 print(df.shape)
 
 
-# In[ ]:
+# In[19]:
 
 
 whichCountry = set(df_ccd['CountryCode'].unique()) - set(df['CountryCode'].unique())
@@ -207,27 +206,27 @@ print(whichCountry)
 
 # #### Drop 'MajorityVaccinated' and 'PopulationVaccinated'.
 
-# In[ ]:
+# In[20]:
 
 
 #df_vacc = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv')
 df_vc = df
 
 
-# In[ ]:
+# In[21]:
 
 
 df = df.dropna(subset=['MajorityVaccinated', 'PopulationVaccinated'])
 print(df.shape)
 
 
-# In[ ]:
+# In[22]:
 
 
 df_vc.shape[0] - df.shape[0]
 
 
-# In[ ]:
+# In[23]:
 
 
 whichCountry = set(df_vc['CountryCode'].unique()) - set(df['CountryCode'].unique())
@@ -238,7 +237,7 @@ print(whichCountry)
 
 # #### Removing duplicates
 
-# In[ ]:
+# In[24]:
 
 
 df = df.drop_duplicates()
@@ -246,13 +245,13 @@ df = df.drop_duplicates()
 
 # #### Reset the index of our dataframe
 
-# In[ ]:
+# In[25]:
 
 
 df = df.reset_index(drop=True)
 
 
-# In[ ]:
+# In[26]:
 
 
 print(df.shape)
@@ -260,13 +259,13 @@ print(df.shape)
 
 # #### We didn't have any duplicate entries in the dataset.
 
-# In[ ]:
+# In[27]:
 
 
 df.info()
 
 
-# In[ ]:
+# In[28]:
 
 
 df
@@ -275,78 +274,86 @@ df
 # ### Univariate Analysis
 # Conducted to examine the columns in an easier and visual way.
 
-# In[ ]:
+# In[29]:
 
 
-helper_df = pd.read_csv('../helpers/data_description.csv')
+helper_df = pd.read_csv('../helpers/output.csv')
 helper_df['Column_Name'] = [col.split('_')[0] if ' ' in col else col for col in helper_df['Column_Name'].values]
 helper_df['Column_Name'].values
 
 
-# In[ ]:
+# In[30]:
+
+
+columns_here = ['E3', 'E4', 'H4', 'H5']
+for column in columns_here:
+    df[column + '__'] = df[column].apply(lambda x: -1 if pd.isnull(x) else (0 if x == 0 else 1))
+    plt.figure(figsize=(8, 8))
+    sns.countplot(x=df[column + '__'])
+    #plt.legend(labels=['Missing', 'No Spending', 'Spending'], loc='upper right')
+    plt.xlabel('Spending Status')
+    plt.ylabel('Count')
+    plt.title('Spending for ' + column)
+    plt.show()
+    print(f'Mean : {df[column].mean()}, Median : {df[column].median()}, MAX : {df[column].max()}')
+    print(f'Corresponding Country is : {df[df[column] == df[column].max()]["CountryCode"].values[0]}')
+    df.drop(column + '__', axis=1, inplace=True)
+
+
+# In[31]:
+
+
+helper_df.columns
+
+
+# In[32]:
 
 
 #helper_df = pd.read_csv('/content/drive/MyDrive/CIC/data_description.csv')
-
-helper_df = helper_df.rename(columns={
-    helper_df.columns[0]: 'Column_Name',
-    helper_df.columns[1]: 'Description',
-    helper_df.columns[2]: 'Measurement',
-helper_df.columns[3]: 'Coding'
-}).iloc[1:]
-
 def decide_and_plot(df, column, measurement_info):
-    if measurement_info in ['Ordinal', 'Ordinal scale', 'Ordinal Scale', 'Binary Flag', 'Binary', 'Binary Flag for sectoral scope', 'Binary Flag for geographical scope', 'Categorical']:
+    if measurement_info in ['BinaryFlag', 'Binary', 'Categorical', 'Ordinal']:
         # Count plot for categorical and binary data
-        #sns.countplot(data=df, x=column)
-        #plt.title(f'Count Plot for {column}')
-        #plt.xticks(rotation=90)
-        #plt.show()
-        fig = go.Figure(data=go.Histogram(x=df[column]))
-        fig.update_layout(title_text=f'Count Plot for {column}', xaxis_title=column, yaxis_title='Count')
-        fig.show()
+        #df[column + '_temp'] = df[column].apply(lambda x: -1 if pd.isnull(x) else x)
+        if measurement_info == 'Categorical':
+            df[column+'__'] = df[column].apply(lambda x: 'Missing' if pd.isnull(x) else x)
+            sns.countplot(x=df[column+'__'])
+            plt.title(f'Count Plot for {column}')
+            plt.xticks(rotation=90)
+            plt.show()
+            df.drop(column+'__', axis=1, inplace=True)
+        else: 
+            df[column+'__'] = df[column].apply(lambda x: -1 if pd.isnull(x) else x)
+            sns.countplot(data=df, x=column + '__')
+            plt.title(f'Count Plot for {column}')
+            plt.show()
+            df.drop(column+'__', axis=1, inplace=True)
+        #fig = go.Figure(data=go.Histogram(x=df[column]))
+        #fig.update_layout(title_text=f'Count Plot for {column}', xaxis_title=column, yaxis_title='Count')
+        #fig.show()
     elif measurement_info in ['USD', 'Number', 'Numeric', 'Numerical']:
         # Histogram for numerical data
-        #sns.histplot(data=df, x=column, kde=True)
-        #plt.title(f'Histogram for {column}')
-        #plt.show()
-        fig = go.Figure(data=go.Histogram(x=df[column], histnorm='probability'))
-        fig.update_layout(title_text=f'Histogram for {column}', xaxis_title=column, yaxis_title='Density')
-        #        
-        fig = go.Figure() 
-        fig.add_trace(go.Histogram(x=df[column], histnorm='probability', name='Histogram'))
-        kde = KDEUnivariate(df[column].dropna())
-        kde.fit(bw="scott", fft=True)
-        #drop na and plot since KDE from statsmodels does not handle nan values
-        x_range = np.linspace(min(df[column].dropna()), max(df[column].dropna()), 100)
-        y_range = kde.evaluate(x_range)
-        fig.add_trace(go.Scatter(x=x_range, y=y_range, mode='lines', name='KDE'))
-        fig.update_layout(title_text=f'Histogram with KDE for {column}', xaxis_title=column, yaxis_title='Density')
-        fig = ff.create_distplot([df[column].dropna()], [column], show_hist=True, show_rug=False)
-        fig.update_layout(title_text=f'Histogram with KDE for {column}', xaxis_title=column)
-        fig.show()
+        df[column+'__'] = df[column].apply(lambda x: -99 if pd.isnull(x) else x)
+        sns.histplot(data=df, x=column, kde=True)
+        plt.title(f'Histogram for {column}')
+        plt.show()
+        df.drop(column+'__', axis=1, inplace=True)
+
+exclude_columns = ['Date', 'CountryName', 'ConfirmedCases', 'ConfirmedDeaths', 'PopulationVaccinated', 'E3', 'E4', 'H4', 'H5']
+columns_to_plot = [col for col in df.columns if col not in exclude_columns]
 
 
-exclude_columns = ['Date', 'CountryName']
-columns_for_plot = [col for col in df.columns if col not in exclude_columns]
-
-for column in columns_for_plot:
-    measurement_type = helper_df[helper_df['Column_Name'] == column]['Measurement'].values
+for column in columns_to_plot:
+    measurement_type = helper_df[helper_df['Column_Name'] == column]['Measurement_2'].values
     if measurement_type.size > 0:
         decide_and_plot(df, column, measurement_type[0])
 
 
-
-start_date = df['Date'].min()
-end_date = df['Date'].max()
-print(f"Start Date: {start_date}, End Date: {end_date}")
-
-
 # #### Considering nationwide policies only
 
-# In[ ]:
+# In[33]:
 
 
+'''
 # columns that end with 'Flag' but are not 'E1_Flag' or 'H7_Flag'
 flag_columns = [col for col in df.columns if col.endswith('Flag') and col not in ['E1_Flag', 'H7_Flag']]
 
@@ -356,9 +363,10 @@ df = df[(df[flag_columns] == 1).any(axis=1)]
 df = df.drop(columns=flag_columns)
 
 df.shape
+'''
 
 
-# In[ ]:
+# In[34]:
 
 
 df.describe()
@@ -370,7 +378,7 @@ df.describe()
 # 
 # May use it later.
 
-# In[ ]:
+# In[35]:
 
 
 '''
@@ -421,9 +429,10 @@ df.isna().sum()
 
 # #### Fill NaNs with 0.
 
-# In[ ]:
+# In[36]:
 
 
+'''
 for col in df.columns:
     if pd.api.types.is_numeric_dtype(df[col]):
         df.loc[:, col] = df[col].fillna(0)
@@ -431,17 +440,12 @@ for col in df.columns:
         if '0' not in df[col].cat.categories:
             df[col] = df[col].cat.add_categories('0')
         df.loc[:, col] = df[col].fillna('0')
-
-
-# In[ ]:
-
-
-df.dtypes
+'''        
 
 
 # ### Correlation Matrix
 
-# In[ ]:
+# In[37]:
 
 
 corr_matrix = df.corr(numeric_only=True)
@@ -474,7 +478,7 @@ for pair in unique_pairs:
 len(unique_pairs)
 
 
-# In[ ]:
+# In[38]:
 
 
 aggregation_funcs = {}
@@ -487,7 +491,9 @@ for column in df.columns:
       aggregation_funcs[column] = 'sum'
 
 
-# In[ ]:
+# ### TSA
+
+# In[39]:
 
 
 # Aggregating data by date
@@ -516,19 +522,19 @@ plt.tight_layout()
 plt.show()
 
 
-# In[ ]:
+# In[40]:
 
 
 print('The total number of covid-19 cases in our dataset are {}'.format(df_agg_date['ConfirmedCases'].iloc[-1]))
 
 
-# In[ ]:
+# In[41]:
 
 
 df_agg_date.describe()
 
 
-# In[ ]:
+# In[42]:
 
 
 df_agg_date.tail()
@@ -537,7 +543,7 @@ df_monthly.head(25)
 #df_monthly.tail(25)
 
 
-# In[ ]:
+# In[43]:
 
 
 containment_policy_columns = ['C1M', 'C2M', 'C3M',
@@ -571,7 +577,7 @@ plt.show()
 
 
 
-# In[ ]:
+# In[44]:
 
 
 health_policy_columns = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6M', 'H7', 'H8M']
@@ -605,13 +611,7 @@ plt.show()
 
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[45]:
 
 
 economic_policy_columns = ['E1','E2', 'E3', 'E4']
@@ -643,13 +643,13 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.show()
 
 
-# In[ ]:
+# In[46]:
 
 
 df_monthly.head(1)
 
 
-# In[ ]:
+# In[47]:
 
 
 vaccination_policy_columns = ['V1', 'V2A', 'V2B','V2C','V2D', 'V2E_Education','V2F', 'V2G', 'V3', 'V4']
@@ -681,13 +681,7 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.show()
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[48]:
 
 
 fig, ax1 = plt.subplots(figsize=(14, 8))
@@ -719,64 +713,12 @@ plt.show()
 # In[ ]:
 
 
-fig, ax1 = plt.subplots(figsize=(14, 8))
 
-colors = ['blue', 'green', 'orange', 'purple', 'red']
-
-sns.lineplot(x='Date', y='StringencyIndex_Average', data=df_monthly, color=colors[0], ax=ax1, label='Stringency Index', legend=None)
-sns.lineplot(x='Date', y='GovernmentResponseIndex_Average', data=df_monthly, color=colors[1], ax=ax1, label='Government Response Index', legend=None)
-sns.lineplot(x='Date', y='ContainmentHealthIndex_Average', data=df_monthly, color=colors[2], ax=ax1, label='Containment Health Index', legend=None)
-sns.lineplot(x='Date', y='EconomicSupportIndex', data=df_monthly, color=colors[3], ax=ax1, label='Economic Support Index', legend=None)
-
-ax1.set_title('Indexes and ConfirmedCases Over Time')
-ax1.set_xlabel('Date')
-ax1.set_ylabel('Linear Scale')
-
-ax2 = ax1.twinx()
-sns.lineplot(x='Date', y='ConfirmedCases', data=df_monthly, color=colors[4], ax=ax2, label='Confirmed Cases (Log Scale)', legend=None)
-ax2.set_ylabel('Log Scale')
-ax2.set_yscale('log')
-
-
-lines_1, labels_1 = ax1.get_legend_handles_labels()
-lines_2, labels_2 = ax2.get_legend_handles_labels()
-ax2.legend(lines_1 + lines_2, labels_1 + labels_2, loc='best', ncol=2, bbox_to_anchor=(0.9, 1))
-
-plt.show()
-
-
-# In[ ]:
-
-
-fig, ax1 = plt.subplots(figsize=(14, 8))
-
-colors = ['blue', 'green', 'orange', 'purple', 'red']
-
-sns.lineplot(x='Date', y='StringencyIndex_Average', data=df_monthly, color=colors[0], ax=ax1, label='Stringency Index', legend=None)
-sns.lineplot(x='Date', y='GovernmentResponseIndex_Average', data=df_monthly, color=colors[1], ax=ax1, label='Government Response Index', legend=None)
-sns.lineplot(x='Date', y='ContainmentHealthIndex_Average', data=df_monthly, color=colors[2], ax=ax1, label='Containment Health Index', legend=None)
-sns.lineplot(x='Date', y='EconomicSupportIndex', data=df_monthly, color=colors[3], ax=ax1, label='Economic Support Index', legend=None)
-
-ax1.set_title('Indexes and ConfirmedCases Over Time')
-ax1.set_xlabel('Date')
-ax1.set_ylabel('Linear Scale')
-
-ax2 = ax1.twinx()
-sns.lineplot(x='Date', y='ConfirmedCases', data=df_monthly, color=colors[4], ax=ax2, label='Confirmed Cases (Log Scale)', legend=None)
-ax2.set_ylabel('Log Scale')
-ax2.set_yscale('log')
-
-
-lines_1, labels_1 = ax1.get_legend_handles_labels()
-lines_2, labels_2 = ax2.get_legend_handles_labels()
-ax2.legend(lines_1 + lines_2, labels_1 + labels_2, loc='best', ncol=2, bbox_to_anchor=(0.9, 1))
-
-plt.show()
 
 
 # ### EDA 2
 
-# In[ ]:
+# In[60]:
 
 
 aggregation_funcs_for_clustering = {}
@@ -790,7 +732,15 @@ for column in df.columns:
       aggregation_funcs_for_clustering[column] = 'sum'
 
 
-# In[ ]:
+# In[61]:
+
+
+orld = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+df2 = df.groupby('CountryCode').agg(aggregation_funcs_for_clustering)
+df2.head()
+
+
+# In[62]:
 
 
 world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
@@ -819,7 +769,7 @@ for key, value in policy_dict.items():
   plt.show()
 
 
-# In[ ]:
+# In[53]:
 
 
 fig, axs = plt.subplots(4, 1, figsize=(7, 20))
@@ -840,7 +790,7 @@ plt.tight_layout()
 plt.show()
 
 
-# In[ ]:
+# In[54]:
 
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
@@ -849,11 +799,23 @@ ax.set_title('Economic support provided for formal and informal sectors (in red 
 plt.show()
 
 
-# In[ ]:
+# In[55]:
 
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 world.plot(column='H7_Flag', cmap='coolwarm', linewidth=0.8, ax=ax, edgecolor='0.8', legend=True, aspect='equal')
 ax.set_title('Vaccines Sold to individuals at minimum or no cost (red)')
 plt.show()
+
+
+# In[59]:
+
+
+world.describe()
+
+
+# In[ ]:
+
+
+
 
