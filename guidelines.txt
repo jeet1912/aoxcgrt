@@ -58,7 +58,12 @@ creating functions for plots.
 
 Modelling
 
+for iteration in iterations
+    create model
+    calculate score appropriate for that model
+    append metric and iterations to a dictionary for that model
 
+plot it
 
 
 
