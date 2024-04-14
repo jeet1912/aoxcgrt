@@ -29,11 +29,11 @@ CHECKPOINT VARIABLES TO STORE RESULTS!
 HP: 
 1. Mortality rate column. (handle missing populations)
 2. life_expectancy, age (if not represented in 2), extreme poverty, hospital beds per 1000
-2. Features not covered under weighted indexes. To be treated as a separated feature considering its semantic meaning.
 3. Correlation matrix with selected features.
 4. Subheadings for easier navigation.
 5. Use the plots for Confirmed cases to plot mortality rate. (I've used log scale for cases, may not be applicable for mortality rate)
 6. Sample code for creating new categories: 
+
 import pandas as pd
 
 # Assuming 'df' is your DataFrame and it has a 'StringencyIndex_Average' column
@@ -41,13 +41,13 @@ quantiles = df['StringencyIndex_Average'].quantile([0.25, 0.5, 0.75])
 
 def assign_category(value):
     if value <= quantiles.iloc[0]:
-        return 'Low'
+        return 'Low_SI'
     elif value <= quantiles.iloc[1]:
-        return 'Medium'
+        return 'Medium_SI'
     elif value <= quantiles.iloc[2]:
-        return 'High'
+        return 'High_SI'
     else:
-        return 'Very High'
+        return 'VeryHigh_SI'
 
 df['StringencyCategory'] = df['StringencyIndex_Average'].apply(assign_category)
 
