@@ -80,4 +80,6 @@ ContainmentHealthIndex_Average,"Weighted Average of C1, C2, C3, C4, C5, C6, C7, 
 EconomicSupportIndex,Weighted Average of E1 and E2,Numeric,Economic Support Index,Numeric
 Population,Self descriptive,Numeric,Population from OWID,Numeric
 GDP_Per_Capita,Self descriptive,Numeric,GDP per capita from OWID,Numeric
-
+Life_Expectancy,Self descriptive,Numeric,From OWID,Numeric
+Hospital_Beds_Per_Thousand,Self descriptive,Numeric,From OWID,Numeric
+Mortality Rate,Self descriptive,Numeric,From OWID,Numeric

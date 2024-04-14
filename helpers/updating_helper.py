@@ -25,16 +25,16 @@ metadata['Description'] = dictOfHelper['Description']
 metadata['Measurement'] = dictOfHelper['Measurement']
 metadata['customDescription'] = dictOfHelper['customDescription']
 metadata['Measurement_2'] = dictOfHelper['Measurement_2']
-
-
 '''
+
+
 new_metadata = {
-    'Column_Name': ['Population','GDP_Per_Capita'],
-    'Description': ['Self descriptive','Self descriptive'],
-    'Measurement': ['Numeric','Numeric'],
-    'Coding (if given)': ['-','-'],
-    'customDescription': ['Population from OWID','GDP per capita from OWID'],
-    'Measurement_2': ['Numeric','Numeric']
+    'Column_Name': ['Life_Expectancy','Hospital_Beds_Per_Thousand','Mortality Rate'],
+    'Description': ['Self descriptive','Self descriptive','Self descriptive'],
+    'Measurement': ['Numeric','Numeric','Numeric'],
+    'Coding (if given)': ['-','-','-'],
+    'customDescription': ['From OWID','From OWID','From OWID'],
+    'Measurement_2': ['Numeric','Numeric','Numeric']
 }
 
 for key in metadata:
@@ -46,4 +46,5 @@ for key, value in metadata.items():
 df = pd.DataFrame(metadata)
 df.to_csv('helpers/output.csv', index=False)
 '''
+
 # TODO: Update data_description.csv in the end
