@@ -3,8 +3,7 @@ Refer: https://nbdime.readthedocs.io/en/stable/
 Run nbdime mergetool in terminal for merge conflicts. 
 
 Before a commit:
-     Convert the OxCGRT.ipynb to a python script and create/Update the pip-requirements.
-     Create/Update the conda-requirements using your conda environment.
+    Use requirementsHelper under code to update requirements.txt
 
 Tips:
     Create a new environment for this project.
