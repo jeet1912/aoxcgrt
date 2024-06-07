@@ -1,5 +1,4 @@
 category_encoders
-collections
 geopandas
 google
 imblearn
@@ -9,6 +8,6 @@ pandas
 plotly
 seaborn
 shap
-sklearn
+scikit-learn
 statsmodels
-warnings
+imblearn
