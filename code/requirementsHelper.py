@@ -1,9 +1,9 @@
-#Generated using GPT4o.
-
 import ast
 import nbformat
 from nbconvert import PythonExporter
 import os
+import sys
+import importlib.util
 
 def get_imports(node):
     if isinstance(node, ast.Import):
@@ -15,6 +15,13 @@ def get_imports(node):
 
 def get_top_level_package(module_name):
     return module_name.split('.')[0]
+
+def is_standard_library(library):
+    if library in sys.builtin_module_names:
+        return True
+    else:
+        spec = importlib.util.find_spec(library)
+        return spec is None or (spec.origin is not None and 'site-packages' not in spec.origin)
 
 def notebook_to_requirements(directory_path, requirements_path):
     libraries = set()
@@ -35,8 +42,16 @@ def notebook_to_requirements(directory_path, requirements_path):
                     top_level_imports = [get_top_level_package(lib) for lib in imports]
                     libraries.update(top_level_imports)
 
+    filtered_libraries = set()
+    for library in libraries:
+        if not is_standard_library(library):
+            if library == "sklearn":
+                filtered_libraries.add("scikit-learn")
+            else:
+                filtered_libraries.add(library)
+
     with open(requirements_path, 'w') as f:
-        for library in sorted(libraries):
+        for library in sorted(filtered_libraries):
             f.write(f'{library}\n')
 
 # Usage

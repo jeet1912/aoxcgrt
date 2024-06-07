@@ -1,13 +1,11 @@
 category_encoders
 geopandas
-google
 imblearn
 matplotlib
 numpy
 pandas
 plotly
+scikit-learn
 seaborn
 shap
-scikit-learn
 statsmodels
-imblearn
